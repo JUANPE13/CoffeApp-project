@@ -1,0 +1,42 @@
+def main():
+    print("Welcome to App delivery of coffe!")
+
+    # Show menu
+    menu = {"Espresso": 3.00, "Latte": 3.50, "Caappuccino": 4.00, "Mocha": 4.50}
+
+    print("Menu:")
+    for cafe, price in menu.items():
+        print(f"{cafe}: ${price:.2f}")
+
+    # select order
+    order = input("¿what coffe do you want drink? ").capitalize()
+    if order not in menu:
+        print("This option is not in menu")
+        return
+
+    # Select how many
+    how_many = int(input("¿How many? "))
+
+    # Calculate total cost
+    total = calculate_total(menu, order, how_many)
+    print(f"Total is: ${total:.2f}. ¡Thanks for your order!")
+
+
+def calculate_total(menu, order, how_many):
+    price_one = menu[order]
+    subtotal = price_one * how_many
+    delivery_agree = calculate_delivery(subtotal)
+    total = subtotal + delivery_agree
+    return total
+
+
+def calculate_delivery(total):
+    if total < 10:
+        return 2.00
+    elif total < 20:
+        return 1.00
+    else:
+        return 0.00
+
+
+main()
