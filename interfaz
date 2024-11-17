@@ -1,0 +1,61 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# Show menu
+menu = {"Espresso": 3.00, "Latte": 3.50, "Cappuccino": 4.00, "Mocha": 4.50}
+
+
+# Tax of delivery
+def calculate_delivery(total):
+    if total < 10:
+        return 2.00
+    elif total < 20:
+        return 1.00
+    else:
+        return 0.00
+
+
+# calculate total
+def calculate_total(menu, order, how_many):
+    price_one = menu.get(order, 0)
+    subtotal = price_one * how_many
+    delivery_fee = calculate_delivery(subtotal)
+    total = subtotal + delivery_fee
+    return total
+
+
+def place_order():
+    order = order_var.get()
+    try:
+        how_many = int(quantity_entry.get())
+        if order not in menu:
+            messagebox.showerror("This option is not in menu")
+            return
+
+        total = calculate_total(menu, order, how_many)
+        messagebox.showinfo("Total", f"Total of your order is: ${total:.2f}")
+    except ValueError:
+        messagebox.showerror("Error", "Tipe a correct number.")
+
+
+app = tk.Tk()
+app.title("App de Delivery de Café")
+app.geometry("300x250")
+
+# coffe
+tk.Label(app, text="Select your Drink", font=("Arial", 12)).pack(pady=10)
+order_var = tk.StringVar()
+order_menu = tk.OptionMenu(app, order_var, *menu.keys())
+order_menu.pack()
+
+# number of drinks
+tk.Label(app, text="¿How Many?", font=("Arial", 12)).pack(pady=10)
+quantity_entry = tk.Entry(app)
+quantity_entry.pack()
+
+# button to make order
+order_button = tk.Button(app, text="Order", command=place_order)
+order_button.pack(pady=20)
+
+app.mainloop()
+
